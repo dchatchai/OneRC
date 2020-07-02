@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:onerc/widget/show_info_shop.dart';
+import 'package:onerc/widget/show_my_order_shop.dart';
+import 'package:onerc/widget/show_my_product.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class MainShop extends StatefulWidget {
   @override
@@ -6,13 +10,33 @@ class MainShop extends StatefulWidget {
 }
 
 class _MainShopState extends State<MainShop> {
+
+  Widget currentWidget = ShowMyOrderShop();
+  String idShop, nameShop;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    findShop();
+  }
+
+  Future<Null> findShop()async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    setState(() {
+      idShop = preferences.getString('id');
+      nameShop = preferences.getString('Name');
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       drawer: showDrawer(),
       appBar: AppBar(
-        title: Text('Welcome Shop'),
+        title: Text(nameShop == null ? 'Welcome Shop' : 'ร้าน $nameShop' ),
       ),
+      body: currentWidget,
     );
   }
 
@@ -35,6 +59,9 @@ class _MainShopState extends State<MainShop> {
         subtitle: Text('ดูรายการสั่งของ'),
         onTap: () {
           Navigator.pop(context);
+          setState(() {
+            currentWidget = ShowMyOrderShop();
+          });
         },
       );
 
@@ -44,6 +71,9 @@ class _MainShopState extends State<MainShop> {
         subtitle: Text('ดูรายการสินค้า'),
         onTap: () {
           Navigator.pop(context);
+          setState(() {
+            currentWidget = ShowMyProduct();
+          });
         },
       );
 
@@ -53,6 +83,9 @@ class _MainShopState extends State<MainShop> {
         subtitle: Text('ดูข้อมูลร้านค้า'),
         onTap: () {
           Navigator.pop(context);
+          setState(() {
+            currentWidget = ShowInfoShop(idShop: idShop,);
+          });
         },
       );
 }
