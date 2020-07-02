@@ -1,4 +1,6 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:onerc/utility/my_constant.dart';
 import 'package:onerc/utility/my_style.dart';
 import 'package:onerc/utility/normal_dialog.dart';
 
@@ -52,7 +54,11 @@ class _RegisterState extends State<Register> {
             normalDialog(context, 'Please Fill Every Blank');
           } else if (type == null) {
             normalDialog(context, 'โปรดเลือกชนิดของสมาชิก');
-          } else {}
+          } else {
+            checkUserThread();
+
+            // registerThread();
+          }
         },
         child: Icon(Icons.cloud_upload),
       ),
@@ -92,4 +98,31 @@ class _RegisterState extends State<Register> {
           },
         ),
       );
+
+  Future<Null> registerThread() async {
+    DateTime dateTime = DateTime.now();
+    String dateString = dateTime.toString();
+    //print('dateString = $dateString');
+    String urlAPI =
+        '${MyConstant().domain}/RCI/addUserOne.php?isAdd=true&Name=$name&User=$user&Password=$password&CreateDate=$dateString&Type=$type';
+    Response response = await Dio().get(urlAPI);
+
+    if (response.toString() == 'true') {
+      Navigator.pop(context);
+    } else {
+      normalDialog(context, 'กรุณาลองใหม่อีกครั้ง');
+    }
+  }
+
+  Future<Null> checkUserThread() async {
+    String url =
+        '${MyConstant().domain}/RCI/getUserWhereUserUng.php?isAdd=true&User=$user';
+    Response response = await Dio().get(url);
+    // print('response = $response');
+    if (response.toString() == 'null') {
+      registerThread();
+    } else {
+      normalDialog(context, '$user มีคนใช้แล้ว กรุณาเปลี่ยน User ใหม่');
+    }
+  }
 }
