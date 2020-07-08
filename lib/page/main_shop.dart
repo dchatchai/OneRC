@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:onerc/utility/my_style.dart';
 import 'package:onerc/widget/show_info_shop.dart';
 import 'package:onerc/widget/show_my_order_shop.dart';
 import 'package:onerc/widget/show_my_product.dart';
@@ -42,12 +43,16 @@ class _MainShopState extends State<MainShop> {
 
   Drawer showDrawer() {
     return Drawer(
-      child: Column(
+      child: Stack(
         children: <Widget>[
-          UserAccountsDrawerHeader(accountName: null, accountEmail: null),
-          menuMyOrder(),
-          menuMyProduct(),
-          menuMyInformation()
+          Column(
+            children: <Widget>[
+              UserAccountsDrawerHeader(accountName: null, accountEmail: null),
+              menuMyOrder(),
+              menuMyProduct(),
+              menuMyInformation()
+            ],
+          ),MyStyle().menuSignOut(context),
         ],
       ),
     );

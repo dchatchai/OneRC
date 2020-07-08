@@ -15,25 +15,65 @@ class Authen extends StatefulWidget {
 
 class _AuthenState extends State<Authen> {
   String user, password;
+  bool status = true;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    // สั่งให้ทำงานก่อน build
+    super.initState();
+    findLogin();
+  }
+
+  Future<Null> findLogin() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    String typeLogin = preferences.getString('Type');
+    print('typeLogin = $typeLogin');
+
+    if (typeLogin == null || typeLogin.isEmpty) {
+      setState(() {
+        status = false;
+      });
+    } else {
+      switch (typeLogin) {
+        case 'User':
+          routeToService(MainUser());
+          break;
+        case 'Shop':
+          routeToService(MainShop());
+          break;
+        default:
+      }
+    }
+  }
+
+  void routeToService(Widget widget) {
+    MaterialPageRoute route = MaterialPageRoute(
+      builder: (context) => widget,
+    );
+    Navigator.pushAndRemoveUntil(context, route, (route) => false);
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              MyStyle().showLogo(),
-              MyStyle().showTextH1('Royal Can'),
-              userForm(),
-              passwordForm(),
-              loginButton(),
-              registerButton(),
-            ],
-          ),
-        ),
-      ),
+      body: status
+          ? MyStyle().showProgress()
+          : Center(
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    MyStyle().showLogo(),
+                    MyStyle().showTextH1('Royal Can'),
+                    userForm(),
+                    passwordForm(),
+                    loginButton(),
+                    registerButton(),
+                  ],
+                ),
+              ),
+            ),
     );
   }
 
@@ -118,6 +158,7 @@ class _AuthenState extends State<Authen> {
     preferences.setString('id', model.id);
     preferences.setString('Name', model.name);
     preferences.setString('Type', model.type);
+    // ผังค่า login ของ user
 
     MaterialPageRoute route = MaterialPageRoute(
       builder: (context) => widget,
