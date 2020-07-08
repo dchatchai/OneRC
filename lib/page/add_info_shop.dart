@@ -1,7 +1,10 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:onerc/utility/my_constant.dart';
 import 'package:onerc/utility/my_style.dart';
 import 'package:onerc/utility/normal_dialog.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AddInfoShop extends StatefulWidget {
   @override
@@ -9,7 +12,7 @@ class AddInfoShop extends StatefulWidget {
 }
 
 class _AddInfoShopState extends State<AddInfoShop> {
-  String dateTimeString, gender, educateString, address, phone;
+  String dateTimeString, gender, educateString, address, phone, id;
   List<String> educate = [
     'ต่ำกว่า ป.6',
     'มัธยมต้น',
@@ -23,7 +26,13 @@ class _AddInfoShopState extends State<AddInfoShop> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    findId();
     findCurrentTime();
+  }
+
+  Future<Null> findId() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    id = preferences.getString('id');
   }
 
   Future<Null> findCurrentTime() async {
@@ -38,16 +47,17 @@ class _AddInfoShopState extends State<AddInfoShop> {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          if (address == null || address.isEmpty || phone == null || phone.isEmpty) {
+          if (address == null ||
+              address.isEmpty ||
+              phone == null ||
+              phone.isEmpty) {
             normalDialog(context, 'กรุณากรอกข้อมูลให้ครบ');
-            
           } else if (gender == null) {
             normalDialog(context, 'กรุณาเลือก gender');
-            
-          } else if (educateString == null ) {
+          } else if (educateString == null) {
             normalDialog(context, 'กรุณาเลือก Educate');
           } else {
-
+            editValueOnMySQL();
           }
         },
         child: Icon(Icons.cloud_upload),
@@ -163,4 +173,17 @@ class _AddInfoShopState extends State<AddInfoShop> {
           decoration: MyStyle().myInputDecoration('เบอร์โทรศัพท์ : '),
         ),
       );
+
+  Future<Null> editValueOnMySQL() async {
+    String url =
+        '${MyConstant().domain}/RCI/editUserWhereIdUng.php?id=$id&isAdd=true&CreateDate=$dateTimeString&Address=$address&Phone=$phone&Gendel=$gender&Education=$educateString';
+
+    await Dio().get(url).then((value) {
+      if (value.toString() == 'true') {
+        Navigator.pop(context);
+      } else {
+        normalDialog(context, 'Please try again');
+      }
+    });
+  }
 }
