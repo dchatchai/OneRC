@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:onerc/page/add_info_shop.dart';
 
 class ShowInfoShop extends StatefulWidget {
   final String idShop;
@@ -21,6 +22,17 @@ class _ShowInfoShopState extends State<ShowInfoShop> {
 
   @override
   Widget build(BuildContext context) {
-    return Text('This is My Information of id = $idShop');
+    return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          MaterialPageRoute route = MaterialPageRoute(
+            builder: (context) => AddInfoShop(),
+          );
+          Navigator.push(context, route).then((value) => null);
+        },
+        child: Icon(Icons.add),
+      ),
+      body: Text('This is My Information of id = $idShop'),
+    );
   }
 }

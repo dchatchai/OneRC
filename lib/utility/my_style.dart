@@ -54,6 +54,18 @@ class MyStyle {
         ),
       );
 
+  Widget showTextH2(String string) => Container(margin: EdgeInsets.only(left: 8),
+    child: Text(
+          string,
+          style: TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+            color: darkColor,
+          ),
+        ),
+  );
+
+
   Container showLogo() {
     return Container(
       width: 150,
