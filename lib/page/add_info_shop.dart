@@ -13,19 +13,15 @@ class AddInfoShop extends StatefulWidget {
 
 class _AddInfoShopState extends State<AddInfoShop> {
   String dateTimeString, gender, educateString, address, phone, id;
-  List<String> educate = [
-    'ต่ำกว่า ป.6',
-    'มัธยมต้น',
-    'มัธยมปลาย',
-    'ป.ตรี',
-    'ป.โท',
-    'ป.เอก'
-  ];
+  List<String> educate;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+
+    educate = MyConstant().educate;
+
     findId();
     findCurrentTime();
   }
