@@ -70,7 +70,7 @@ class _ShowInfoShopState extends State<ShowInfoShop> {
         MaterialPageRoute route = MaterialPageRoute(
           builder: (context) => AddInfoShop(),
         );
-        Navigator.push(context, route).then((value) => null);
+        Navigator.push(context, route).then((value) => readInfo());
       },
       child: Icon(Icons.add),
     );
@@ -82,7 +82,7 @@ class _ShowInfoShopState extends State<ShowInfoShop> {
         MaterialPageRoute route = MaterialPageRoute(
           builder: (context) => EditInfoShop(userModel: userModel,),
         );
-        Navigator.push(context, route).then((value) => null);
+        Navigator.push(context, route).then((value) => readInfo());
       },
       child: Icon(Icons.edit),
     );

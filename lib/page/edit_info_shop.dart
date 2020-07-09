@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:onerc/main.dart';
 import 'package:onerc/models/user_model.dart';
+import 'package:onerc/utility/my_api.dart';
 import 'package:onerc/utility/my_constant.dart';
 import 'package:onerc/utility/my_style.dart';
+import 'package:onerc/utility/normal_dialog.dart';
 
 class EditInfoShop extends StatefulWidget {
   final UserModel userModel;
@@ -44,6 +47,19 @@ class _EditInfoShopState extends State<EditInfoShop> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          print(
+              'date  => $dateTimeString, address = $address, phone = $phone, gendel = $gender, educate = $educateString');
+              if (address.isEmpty || phone.isEmpty ) {
+                normalDialog(context, 'Enter All Value');
+              } else {
+                MyAPI().editValueOnMySQL(context, id, dateTimeString, address, phone, gender, educateString);
+
+              }
+        },
+        child: Icon(Icons.cloud_upload),
+      ),
       appBar: AppBar(
         title: Text('Edit Information'),
       ),
@@ -128,6 +144,7 @@ class _EditInfoShopState extends State<EditInfoShop> {
         margin: EdgeInsets.only(top: 16),
         width: 250,
         child: TextFormField(
+          onChanged: (value) => address = value.trim(),
           initialValue: address,
           decoration: MyStyle().myInputDecoration('Address : '),
         ),
@@ -137,6 +154,8 @@ class _EditInfoShopState extends State<EditInfoShop> {
         margin: EdgeInsets.only(top: 16),
         width: 250,
         child: TextFormField(
+          keyboardType: TextInputType.phone,
+          onChanged: (value) => phone = value.trim(),
           initialValue: phone,
           decoration: MyStyle().myInputDecoration('Phone : '),
         ),
