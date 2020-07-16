@@ -49,17 +49,32 @@ class SQLiteHelper {
     }
   }
 
-  Future<List<SqliteModel>> readDataFromSQLite() async{
+  Future<List<SqliteModel>> readDataFromSQLite() async {
     Database database = await connectedDatabase();
     List<SqliteModel> sqliteModels = List();
     List<Map<String, dynamic>> listMaps = await database.query(nameTable);
     for (var map in listMaps) {
       SqliteModel model = SqliteModel.fromJson(map);
       sqliteModels.add(model);
-            
     }
     return sqliteModels;
-
   }
 
+  Future<Null> deleteDataWhereId(int idProduct) async {
+    Database database = await connectedDatabase();
+    try {
+      await database.delete(nameTable, where: '$column_id = $idProduct');
+    } catch (e) {
+      print('e delete = ${e.toString()}');
+    }
+  }
+
+  Future<Null> clearData() async {
+    Database database = await connectedDatabase();
+    try {
+      await database.delete(nameTable);
+    } catch (e) {
+      print('e clear = ${e.toString()}');
+    }
+  }
 }

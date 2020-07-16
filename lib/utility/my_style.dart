@@ -1,10 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:onerc/page/authen.dart';
+import 'package:onerc/page/show_cart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class MyStyle {
   Color mainColor = Colors.pink;
   Color darkColor = Colors.blue.shade800;
+
+  Widget showChart(BuildContext context) {
+    return IconButton(
+      icon: Icon(Icons.add_shopping_cart),
+      onPressed: () {
+        MaterialPageRoute route = MaterialPageRoute(
+          builder: (context) => ShowCart(),
+        );
+        Navigator.push(context, route);
+      },
+    );
+  }
 
   Widget menuSignOut(BuildContext context) {
     return Column(
@@ -95,7 +108,7 @@ class MyStyle {
             color: Colors.red.shade900,
           ),
         ),
-      );      
+      );
 
   Container showLogo() {
     return Container(

@@ -73,6 +73,7 @@ class _MainUserState extends State<MainUser> {
         ),
       ),
       appBar: AppBar(
+        actions: <Widget>[MyStyle().showChart(context)],
         title: Text('Welcome User'),
       ),
       body: userModels.length == 0 ? MyStyle().showProgress() : buildShop(),

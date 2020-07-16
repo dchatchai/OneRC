@@ -65,7 +65,7 @@ class _ShowMenuShopState extends State<ShowMenuShop> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
+        appBar: AppBar(actions: <Widget>[MyStyle().showChart(context)],
           title: Text(userModel.name),
         ),
         body: status ? MyStyle().showProgress() : currentWidget);
