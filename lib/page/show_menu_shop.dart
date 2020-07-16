@@ -3,9 +3,13 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:onerc/models/product_model.dart';
+import 'package:onerc/models/sqlite_model.dart';
 import 'package:onerc/models/user_model.dart';
 import 'package:onerc/utility/my_constant.dart';
 import 'package:onerc/utility/my_style.dart';
+import 'package:onerc/utility/normal_dialog.dart';
+import 'package:onerc/utility/normal_toast.dart';
+import 'package:onerc/utility/sqlite_helper.dart';
 
 class ShowMenuShop extends StatefulWidget {
   final UserModel userModel;
@@ -183,7 +187,7 @@ class _ShowMenuShopState extends State<ShowMenuShop> {
     );
   }
 
-  Future<Null> insertOrderToSQLite(int index)async {
+  Future<Null> insertOrderToSQLite(int index) async {
     String idShop = productModels[index].idShop;
     String nameShop = productModels[index].nameShop;
     String idProduct = productModels[index].id;
@@ -194,8 +198,35 @@ class _ShowMenuShopState extends State<ShowMenuShop> {
     String sumString = sum.toString();
     // print('idShop = $idShop, nameShop = $nameShop, idProduct = $idProduct, nameProduct = $nameProduct');
     // print('price = $price, sum = $sumString');
+    Map<String, dynamic> map = Map();
+    map['idShop'] = idShop;
+    map['nameShop'] = nameShop;
+    map['idProduct'] = idProduct;
+    map['nameProduct'] = nameProduct;
+    map['price'] = price;
+    map['amountString'] = amountString;
+    map['sumString'] = sumString;
 
+    SqliteModel sqliteModel = SqliteModel.fromJson(map);
 
+    List<SqliteModel> resultFormSQLite =
+        await SQLiteHelper().readDataFromSQLite();
+    print('resultFromSQLite length = ${resultFormSQLite.length}');
 
+    if (resultFormSQLite.length == 0) {
+      await SQLiteHelper().insertDataToSQLite(sqliteModel).then((value) {
+        normalToast('Add Order Success');
+      });
+    } else {
+      String currentIdShop = resultFormSQLite[0].idShop;
+      // print('currentIdShop = $currentIdShop');
+      if (idShop == currentIdShop) {
+        await SQLiteHelper().insertDataToSQLite(sqliteModel).then((value) {
+          normalToast('Add Order Success');
+        });
+      } else {
+        normalDialog(context, 'กรุณาซื้อของจากร้าน ${resultFormSQLite[0].nameShop}');
+      }
+    }
   }
 }

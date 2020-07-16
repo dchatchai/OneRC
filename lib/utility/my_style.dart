@@ -13,9 +13,18 @@ class MyStyle {
         Container(
           decoration: BoxDecoration(color: Colors.red.shade800),
           child: ListTile(
-            leading: Icon(Icons.exit_to_app,color: Colors.white,),
-            title: Text('Sign Out',style: TextStyle(color: Colors.white),),
-            subtitle: Text('ออกจาก Account และไปที่ Authen',style: TextStyle(color: Colors.white),),
+            leading: Icon(
+              Icons.exit_to_app,
+              color: Colors.white,
+            ),
+            title: Text(
+              'Sign Out',
+              style: TextStyle(color: Colors.white),
+            ),
+            subtitle: Text(
+              'ออกจาก Account และไปที่ Authen',
+              style: TextStyle(color: Colors.white),
+            ),
             onTap: () async {
               SharedPreferences preferences =
                   await SharedPreferences.getInstance();
@@ -54,8 +63,9 @@ class MyStyle {
         ),
       );
 
-  Widget showTextH2(String string) => Container(margin: EdgeInsets.only(left: 8),
-    child: Text(
+  Widget showTextH2(String string) => Container(
+        margin: EdgeInsets.only(left: 8),
+        child: Text(
           string,
           style: TextStyle(
             fontSize: 18,
@@ -63,8 +73,29 @@ class MyStyle {
             color: darkColor,
           ),
         ),
-  );
+      );
 
+  Widget showTextH3(String string) => Container(
+        child: Text(
+          string,
+          style: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+            color: darkColor,
+          ),
+        ),
+      );
+
+  Widget showTextH3Red(String string) => Container(
+        child: Text(
+          string,
+          style: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+            color: Colors.red.shade900,
+          ),
+        ),
+      );      
 
   Container showLogo() {
     return Container(

@@ -23,7 +23,7 @@ class SQLiteHelper {
     await openDatabase(
       join(await getDatabasesPath(), nameDatabase),
       onCreate: (db, version) => db.execute(
-          'CREATE TABLE $nameTable ($column_id INTEGER PRIMARY KEY, $column_idShop TEXT, $column_nameShop TEXT, $column_idProduct TEXT, $column_nameShop TEXT, $column_price TEXT, $column_amountString TEXT, $column_sumString TEXT)'),
+          'CREATE TABLE $nameTable ($column_id INTEGER PRIMARY KEY, $column_idShop TEXT, $column_nameShop TEXT, $column_idProduct TEXT, $column_nameProduct TEXT, $column_price TEXT, $column_amountString TEXT, $column_sumString TEXT)'),
       version: version,
     );
   }
@@ -37,7 +37,7 @@ class SQLiteHelper {
     try {
       database
           .insert(
-        nameDatabase,
+        nameTable,
         sqliteModel.toJson(),
         conflictAlgorithm: ConflictAlgorithm.replace, // แบบเขียนทับได้
       )
@@ -48,4 +48,18 @@ class SQLiteHelper {
       print('e insert data = ${e.toString()}');
     }
   }
+
+  Future<List<SqliteModel>> readDataFromSQLite() async{
+    Database database = await connectedDatabase();
+    List<SqliteModel> sqliteModels = List();
+    List<Map<String, dynamic>> listMaps = await database.query(nameTable);
+    for (var map in listMaps) {
+      SqliteModel model = SqliteModel.fromJson(map);
+      sqliteModels.add(model);
+            
+    }
+    return sqliteModels;
+
+  }
+
 }

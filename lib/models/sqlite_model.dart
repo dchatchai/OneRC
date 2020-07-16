@@ -1,5 +1,5 @@
 class SqliteModel {
-  String id;
+  int id;
   String idShop;
   String nameShop;
   String idProduct;
