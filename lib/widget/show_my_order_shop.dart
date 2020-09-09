@@ -7,7 +7,18 @@ class ShowMyOrderShop extends StatefulWidget {
 
 class _ShowMyOrderShopState extends State<ShowMyOrderShop> {
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    readData();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Text('This is My Order');
+    return Text('This is My Order 12345');
+  }
+
+  Future<Null> readData() async{
+    
   }
 }

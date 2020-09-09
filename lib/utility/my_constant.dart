@@ -1,5 +1,5 @@
 class MyConstant {
-  String domain = 'http://6ee79a664ce3.ngrok.io/';
+  String domain = 'http://9111bb0f9d45.ngrok.io/';
 
   List<String> educate = [
     'ต่ำกว่า ป.6',

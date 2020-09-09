@@ -1,9 +1,12 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:onerc/models/sqlite_model.dart';
+import 'package:onerc/utility/my_constant.dart';
 import 'package:onerc/utility/my_style.dart';
+import 'package:onerc/utility/normal_dialog.dart';
 import 'package:onerc/utility/normal_toast.dart';
 import 'package:onerc/utility/sqlite_helper.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -140,8 +143,6 @@ class _ShowCartState extends State<ShowCart> {
             ),
           ),
           Expanded(
-            
-            
             flex: 1,
             // child: MyStyle().showTextH3Red('$total'),
             child: MyStyle().showTextH3Red(f.format(total)),
@@ -209,7 +210,9 @@ class _ShowCartState extends State<ShowCart> {
             Expanded(
               flex: 1,
               //  child: Text(sqliteModels[index].sumString),
-              child: Text(f.format(int.parse(sqliteModels[index].sumString)).toString()),              
+              child: Text(f
+                  .format(int.parse(sqliteModels[index].sumString))
+                  .toString()),
             ),
             Expanded(
               flex: 1,
@@ -271,7 +274,9 @@ class _ShowCartState extends State<ShowCart> {
     print('idUser = $idUser, nameUser = $nameUser');
 
     DateTime dateTime = DateTime.now();
-    String dateTimeString = dateTime.toString();
+
+    //String dateTimeString = dateTime.toString();
+    String dateTimeString = DateFormat('dd-MM-yyyy').format(dateTime);
     print('dateTime = $dateTimeString');
 
     String idShop = sqliteModels[0].idShop;
@@ -283,7 +288,6 @@ class _ShowCartState extends State<ShowCart> {
     List<String> prices = List();
     List<String> amounts = List();
     List<String> sums = List();
-
 
     for (var model in sqliteModels) {
       String idProduct = model.idProduct;
@@ -297,24 +301,31 @@ class _ShowCartState extends State<ShowCart> {
       prices.add(price);
       amounts.add(amount);
       sums.add(sum);
-
     }
-    String idProductString = idProducts.toString();    
+    String idProductString = idProducts.toString();
     String nameProductString = nameProducts.toString();
     String priceString = prices.toString();
     String amountString = amounts.toString();
     String sumString = sums.toString();
 
-    print('idProductString = $idProductString'); 
-    print('idProductString = $nameProductString');      
-    print('idProductString = $priceString');  
-    print('idProductString = $amountString');  
-    print('idProductString = $sumString');  
+    print('idProductString = $idProductString');
+    print('idProductString = $nameProductString');
+    print('idProductString = $priceString');
+    print('idProductString = $amountString');
+    print('idProductString = $sumString');
 
+    String urlMsSQL =
+        '${MyConstant().domain}/rci/insert_order_1.php?isAdd=true&idUser=$idUser&nameUser=$nameUser&dateTimeOrder=$dateTimeString&idShop=$idShop&nameShop=$nameShop&idProduct=$idProductString&nameProduct=$nameProductString&price=$priceString&amount=$amountString&sum=$sumString';
 
+    print(urlMsSQL);
+    await Dio().get(urlMsSQL).then((value) async{
+      if (value.toString() == 'true') {
+        normalToast('Order to Server Success');
+        await SQLiteHelper().clearData().then((value) => Navigator.pop(context));
 
-
-
-    
+      } else {
+        normalDialog(context, 'Have Problem');
+      }
+    });
   }
 }
