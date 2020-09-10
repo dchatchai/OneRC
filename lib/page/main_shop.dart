@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:onerc/utility/my_style.dart';
+import 'package:onerc/widget/show_chart_sales.dart';
 import 'package:onerc/widget/show_info_shop.dart';
+import 'package:onerc/widget/show_line_chart.dart';
 import 'package:onerc/widget/show_my_order_shop.dart';
 import 'package:onerc/widget/show_my_product.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -11,7 +13,6 @@ class MainShop extends StatefulWidget {
 }
 
 class _MainShopState extends State<MainShop> {
-
   Widget currentWidget = ShowMyOrderShop();
   String idShop, nameShop;
 
@@ -22,7 +23,7 @@ class _MainShopState extends State<MainShop> {
     findShop();
   }
 
-  Future<Null> findShop()async {
+  Future<Null> findShop() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     setState(() {
       idShop = preferences.getString('id');
@@ -35,7 +36,7 @@ class _MainShopState extends State<MainShop> {
     return Scaffold(
       drawer: showDrawer(),
       appBar: AppBar(
-        title: Text(nameShop == null ? 'Welcome Shop' : 'ร้าน $nameShop' ),
+        title: Text(nameShop == null ? 'Welcome Shop' : 'ร้าน $nameShop'),
       ),
       body: currentWidget,
     );
@@ -45,14 +46,19 @@ class _MainShopState extends State<MainShop> {
     return Drawer(
       child: Stack(
         children: <Widget>[
-          Column(
-            children: <Widget>[
-              UserAccountsDrawerHeader(accountName: null, accountEmail: null),
-              menuMyOrder(),
-              menuMyProduct(),
-              menuMyInformation()
-            ],
-          ),MyStyle().menuSignOut(context),
+          SingleChildScrollView(
+            child: Column(
+              children: <Widget>[
+                UserAccountsDrawerHeader(accountName: null, accountEmail: null),
+                menuMyOrder(),
+                menuMyProduct(),
+                menuMyInformation(),
+                menuMyChart(),
+                menuMyChartSales(),
+              ],
+            ),
+          ),
+          MyStyle().menuSignOut(context),
         ],
       ),
     );
@@ -89,7 +95,33 @@ class _MainShopState extends State<MainShop> {
         onTap: () {
           Navigator.pop(context);
           setState(() {
-            currentWidget = ShowInfoShop(idShop: idShop,);
+            currentWidget = ShowInfoShop(
+              idShop: idShop,
+            );
+          });
+        },
+      );
+
+  ListTile menuMyChart() => ListTile(
+        leading: Icon(Icons.looks_4),
+        title: Text('Show Line Chart'),
+        subtitle: Text('ดูกราฟ'),
+        onTap: () {
+          Navigator.pop(context);
+          setState(() {
+            currentWidget = ShowLineChart();
+          });
+        },
+      );
+
+  ListTile menuMyChartSales() => ListTile(
+        leading: Icon(Icons.looks_5),
+        title: Text('Show Line Chart Sales'),
+        subtitle: Text('ดูกราฟ Sales'),
+        onTap: () {
+          Navigator.pop(context);
+          setState(() {
+             currentWidget = ShowChartSales();
           });
         },
       );
