@@ -7,7 +7,8 @@ import 'package:onerc/page/show_cart.dart';
 import 'package:onerc/page/show_menu_shop.dart';
 import 'package:onerc/utility/my_constant.dart';
 import 'package:onerc/utility/my_style.dart';
-import 'package:onerc/widget/show_my_order_shop.dart';
+import 'package:onerc/widget/read_bar_code.dart';
+// import 'package:onerc/widget/show_my_order_shop.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class MainUser extends StatefulWidget {
@@ -66,6 +67,7 @@ class _MainUserState extends State<MainUser> {
               children: <Widget>[
                 showHead(),
                 buildCart(),
+                buildReadBarCode(),
               ],
             ),
             MyStyle().menuSignOut(context),
@@ -95,6 +97,24 @@ class _MainUserState extends State<MainUser> {
         ),
         title: Text('ตะกร้าของฉัน'),
         subtitle: Text('แสดงสินค้า'),
+      );
+
+  ListTile buildReadBarCode() => ListTile(
+        onTap: () {
+          Navigator.pop(context);
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => ReadBarCode(),
+              ));
+        },
+        leading: Icon(
+          Icons.android,
+          size: 36,
+          color: Colors.green,
+        ),
+        title: Text('Read Barcode'),
+        subtitle: Text('อ่าน Barcode'),
       );
 
   UserAccountsDrawerHeader showHead() {

@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "221890444994",
+    "firebase_url": "https://onerc-a8b7a.firebaseio.com",
+    "project_id": "onerc-a8b7a",
+    "storage_bucket": "onerc-a8b7a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:221890444994:android:4eb3ce26d9aa22c07a455b",
+        "android_client_info": {
+          "package_name": "com.rcithailand.onerc"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "221890444994-fec0385k0snhpncf79fu5l8vtdm06pkc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBJgbAaWhDTWs0GQ7ty-JWDggSzRooHTSw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "221890444994-fec0385k0snhpncf79fu5l8vtdm06pkc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
