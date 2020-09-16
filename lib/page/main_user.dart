@@ -23,7 +23,8 @@ class _MainUserState extends State<MainUser> {
   List<UserModel> userModels = List();
   List<Widget> widgets = List();
   String nameLogin;
-  Widget currentWidget = ShowChart();
+  // Widget currentWidget = ShowChart();
+  Widget currentWidget = ShowLocation();
 
   @override
   void initState() {
