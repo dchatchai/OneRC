@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:onerc/models/user_model.dart';
 import 'package:onerc/page/show_cart.dart';
@@ -8,6 +9,8 @@ import 'package:onerc/page/show_menu_shop.dart';
 import 'package:onerc/utility/my_constant.dart';
 import 'package:onerc/utility/my_style.dart';
 import 'package:onerc/widget/read_bar_code.dart';
+import 'package:onerc/widget/show_chart.dart';
+import 'package:onerc/widget/show_location.dart';
 // import 'package:onerc/widget/show_my_order_shop.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -20,6 +23,7 @@ class _MainUserState extends State<MainUser> {
   List<UserModel> userModels = List();
   List<Widget> widgets = List();
   String nameLogin;
+  Widget currentWidget = ShowChart();
 
   @override
   void initState() {
@@ -66,6 +70,8 @@ class _MainUserState extends State<MainUser> {
             Column(
               children: <Widget>[
                 showHead(),
+                buildShowChart(),
+                buildShowLocation(),
                 buildCart(),
                 buildReadBarCode(),
               ],
@@ -78,9 +84,42 @@ class _MainUserState extends State<MainUser> {
         actions: <Widget>[MyStyle().showChart(context)],
         title: Text('Welcome User'),
       ),
-      body: userModels.length == 0 ? MyStyle().showProgress() : buildShop(),
+      body: currentWidget,
+      // body: userModels.length == 0 ? MyStyle().showProgress() : buildShop(),
     );
   }
+
+  ListTile buildShowChart() => ListTile(
+        onTap: () {
+          Navigator.pop(context);
+          setState(() {
+            currentWidget = ShowChart();
+          });
+        },
+        leading: Icon(
+          Icons.graphic_eq,
+          size: 36,
+          color: Colors.blue,
+        ),
+        title: Text('แสดงกราฟ'),
+        subtitle: Text('Demo Show Chart'),
+      );
+
+  ListTile buildShowLocation() => ListTile(
+        onTap: () {
+          Navigator.pop(context);
+          setState(() {
+            currentWidget = ShowLocation();
+          });
+        },
+        leading: Icon(
+          Icons.map,
+          size: 36,
+          color: Colors.brown,
+        ),
+        title: Text('แสดงพิกัด'),
+        subtitle: Text('Show all user location.'),
+      );
 
   ListTile buildCart() => ListTile(
         onTap: () {
