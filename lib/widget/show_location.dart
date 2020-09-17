@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
+import 'package:location/location.dart';
 import 'package:onerc/models/location_model.dart';
 import 'package:onerc/utility/my_constant.dart';
 import 'package:onerc/utility/my_style.dart';
@@ -16,13 +17,15 @@ class ShowLocation extends StatefulWidget {
 
 class _ShowLocationState extends State<ShowLocation> {
   bool statusClick = true;
-  double lat = 13.785491, lng = 100.573439;
+  // double lat = 13.785491, lng = 100.573439;
+  double lat, lng;
   List<LocationModel> locationModels = List();
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    findLatLng();
     readAllLocation();
   }
 
@@ -58,7 +61,7 @@ class _ShowLocationState extends State<ShowLocation> {
       ),
       body: locationModels.length == 0
           ? MyStyle().showProgress()
-          : buildShowMap(),
+          : lat == null ? MyStyle().showProgress() : buildShowMap(),
     );
   }
 
@@ -77,7 +80,8 @@ class _ShowLocationState extends State<ShowLocation> {
   Marker currentMarker() {
     return Marker(
       markerId: MarkerId('CurrentID'),
-      position: LatLng(13.785491, 100.573439),
+      // position: LatLng(13.785491, 100.573439),
+      position: LatLng(lat, lng),
       infoWindow:
           InfoWindow(title: 'คุณอยู่ที่นี่', snippet: 'ตำแหน่งปัจจุบันของคุณ'),
     );
@@ -86,9 +90,12 @@ class _ShowLocationState extends State<ShowLocation> {
   Set<Marker> setMarkers() {
     List<Marker> myMarker = List();
     int index = 0;
-    double colorHue = 60.0;
+    double colorHue = 10.0;
     for (var model in locationModels) {
-      colorHue = colorHue + index * 10;
+      colorHue = colorHue + index * 5;
+      if (colorHue >= 360) { 
+        colorHue = 10;        
+      }
       Marker marker = Marker(
         markerId: MarkerId('id$index'),
         position: LatLng(
@@ -98,7 +105,6 @@ class _ShowLocationState extends State<ShowLocation> {
       );
       myMarker.add(marker);
       index++;
-
     }
 
     myMarker.add(currentMarker());
@@ -110,7 +116,8 @@ class _ShowLocationState extends State<ShowLocation> {
   }
 
   Widget buildShowMap() {
-    LatLng latLng = LatLng(13.785491, 100.573439);
+    // LatLng latLng = LatLng(13.785375, 100.573694);
+    LatLng latLng = LatLng(lat, lng);
     CameraPosition cameraPosition = CameraPosition(
       target: latLng,
       zoom: 16,
@@ -138,5 +145,23 @@ class _ShowLocationState extends State<ShowLocation> {
         });
       }
     });
+  }
+
+  Future<Null> findLatLng() async {
+    LocationData locationData = await findLocation();
+    setState(() {
+      lat = locationData.latitude;
+      lng = locationData.longitude;
+    });
+  }
+
+  Future<LocationData> findLocation() async {
+    Location location = Location();
+    try {
+      return await location.getLocation();
+    } catch (e) {      
+      print('e Location =>> ${e.toString()}');
+      return null;
+    }
   }
 }

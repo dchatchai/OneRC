@@ -1,9 +1,13 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:onerc/models/user_model.dart';
 import 'package:onerc/page/main_shop.dart';
 import 'package:onerc/page/main_user.dart';
+import 'package:onerc/page/no_internet.dart';
 import 'package:onerc/page/register.dart';
 import 'package:onerc/utility/my_api.dart';
+import 'package:onerc/utility/my_constant.dart';
 import 'package:onerc/utility/my_style.dart';
 import 'package:onerc/utility/normal_dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -22,7 +26,8 @@ class _AuthenState extends State<Authen> {
     // TODO: implement initState
     // สั่งให้ทำงานก่อน build
     super.initState();
-    findLogin();
+    // findLogin();
+    checkInternet();
   }
 
   Future<Null> findLogin() async {
@@ -164,5 +169,21 @@ class _AuthenState extends State<Authen> {
       builder: (context) => widget,
     );
     Navigator.pushAndRemoveUntil(context, route, (route) => false);
+  }
+
+  Future<Null> checkInternet() async {
+    try {
+      var response = await InternetAddress.lookup('www.rcithailand.com');
+      if ((response.isNotEmpty) && (response[0].rawAddress.isNotEmpty)) {
+        findLogin();
+      }
+    } catch (e) {
+      Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(
+            builder: (context) => NoInternet(),
+          ),
+          (route) => false);
+    }
   }
 }

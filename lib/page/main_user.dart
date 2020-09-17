@@ -8,6 +8,7 @@ import 'package:onerc/page/show_cart.dart';
 import 'package:onerc/page/show_menu_shop.dart';
 import 'package:onerc/utility/my_constant.dart';
 import 'package:onerc/utility/my_style.dart';
+import 'package:onerc/widget/download_file.dart';
 import 'package:onerc/widget/read_bar_code.dart';
 import 'package:onerc/widget/show_chart.dart';
 import 'package:onerc/widget/show_location.dart';
@@ -24,7 +25,8 @@ class _MainUserState extends State<MainUser> {
   List<Widget> widgets = List();
   String nameLogin;
   // Widget currentWidget = ShowChart();
-  Widget currentWidget = ShowLocation();
+  //Widget currentWidget = ShowLocation();
+  Widget currentWidget = DownloadFile();
 
   @override
   void initState() {
@@ -73,6 +75,7 @@ class _MainUserState extends State<MainUser> {
                 showHead(),
                 buildShowChart(),
                 buildShowLocation(),
+                buildShowDownloadFile(),
                 buildCart(),
                 buildReadBarCode(),
               ],
@@ -120,6 +123,22 @@ class _MainUserState extends State<MainUser> {
         ),
         title: Text('แสดงพิกัด'),
         subtitle: Text('Show all user location.'),
+      );
+
+  ListTile buildShowDownloadFile() => ListTile(
+        onTap: () {
+          Navigator.pop(context);
+          setState(() {
+            currentWidget = DownloadFile();
+          });
+        },
+        leading: Icon(
+          Icons.cloud_download,
+          size: 36,
+          color: Colors.orange,
+        ),
+        title: Text('Download File'),
+        subtitle: Text('Show all File'),
       );
 
   ListTile buildCart() => ListTile(
