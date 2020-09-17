@@ -9,6 +9,7 @@ import 'package:onerc/page/show_menu_shop.dart';
 import 'package:onerc/utility/my_constant.dart';
 import 'package:onerc/utility/my_style.dart';
 import 'package:onerc/widget/download_file.dart';
+import 'package:onerc/widget/generate_qrcode.dart';
 import 'package:onerc/widget/read_bar_code.dart';
 import 'package:onerc/widget/show_chart.dart';
 import 'package:onerc/widget/show_location.dart';
@@ -68,7 +69,7 @@ class _MainUserState extends State<MainUser> {
     var listTile = ListTile();
     return Scaffold(
       drawer: Drawer(
-        child: Stack(
+        child: ListView(
           children: <Widget>[
             Column(
               children: <Widget>[
@@ -76,6 +77,7 @@ class _MainUserState extends State<MainUser> {
                 buildShowChart(),
                 buildShowLocation(),
                 buildShowDownloadFile(),
+                buildShowGenQRcode(),
                 buildCart(),
                 buildReadBarCode(),
               ],
@@ -139,6 +141,22 @@ class _MainUserState extends State<MainUser> {
         ),
         title: Text('Download File'),
         subtitle: Text('Show all File'),
+      );
+
+  ListTile buildShowGenQRcode() => ListTile(
+        onTap: () {
+          Navigator.pop(context);
+          setState(() {
+            currentWidget = GenerateQRcode();
+          });
+        },
+        leading: Icon(
+          Icons.scanner,
+          size: 36,
+          color: Colors.yellow,
+        ),
+        title: Text('Gen QRcode'),
+        subtitle: Text('สร้าง QRcode'),
       );
 
   ListTile buildCart() => ListTile(
