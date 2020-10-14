@@ -19,6 +19,11 @@ class MyStyle {
     );
   }
 
+  Widget mySizeBox() => SizedBox(
+        height: 16,
+        width: 16,
+      );
+
   Widget menuSignOut(BuildContext context) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.end,
