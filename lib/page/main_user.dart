@@ -43,6 +43,9 @@ class _MainUserState extends State<MainUser> {
   int amountListProduct = 5;
   ScrollController scrollController = ScrollController();
 
+  List<Widget> naviWidgets;
+  int naviIndex = 0;
+
   @override
   void initState() {
     // TODO: implement initState
@@ -54,6 +57,9 @@ class _MainUserState extends State<MainUser> {
     // currentWidget = buildShop();
     durationTime();
     setupScrollController();
+    // naviWidgets.add(buildShop());
+    // naviWidgets.add(ShowChart());
+    // naviWidgets.add(ShowLocation());
   }
 
   void setupScrollController() {
@@ -147,7 +153,7 @@ class _MainUserState extends State<MainUser> {
 
   @override
   Widget build(BuildContext context) {
-    var listTile = ListTile();
+    // var listTile = ListTile();
     return Scaffold(
       drawer: buildDrawer(context),
       appBar: AppBar(
@@ -323,6 +329,7 @@ class _MainUserState extends State<MainUser> {
               buildTitle('ร้านค้า'),
               buildGridView(),
               MyStyle().mySizeBox(),
+              buildListViewHorizontal(),
               buildTitle('สินค้า'),
               buildListView(),
               buildRaisedButton(),
@@ -330,6 +337,21 @@ class _MainUserState extends State<MainUser> {
           ),
         ),
       );
+
+  Widget buildListViewHorizontal() {
+    return Container(
+      height: 150,
+      child: ListView.builder(
+        scrollDirection: Axis.horizontal,
+        shrinkWrap: true,
+        itemCount: bannerWidgets.length,
+        itemBuilder: (context, index) => Container(
+            height: 150,
+            child: Image.network(
+                '${MyConstant().domain}${bannerModels[index].url}')),
+      ),
+    );
+  }
 
   Widget buildRaisedButton() => Container(
       width: MediaQuery.of(context).size.width,

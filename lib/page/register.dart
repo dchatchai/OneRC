@@ -43,25 +43,7 @@ class _RegisterState extends State<Register> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          if (name == null ||
-              name.isEmpty ||
-              user == null ||
-              user.isEmpty ||
-              password == null ||
-              password.isEmpty) {
-            normalDialog(context, 'Please Fill Every Blank');
-          } else if (type == null) {
-            normalDialog(context, 'โปรดเลือกชนิดของสมาชิก');
-          } else {
-            checkUserThread();
-
-            // registerThread();
-          }
-        },
-        child: Icon(Icons.cloud_upload),
-      ),
+      floatingActionButton: buildFloatingActionButton(context),
       appBar: AppBar(),
       body: Center(
         child: SingleChildScrollView(
@@ -76,6 +58,28 @@ class _RegisterState extends State<Register> {
           ),
         ),
       ),
+    );
+  }
+
+  FloatingActionButton buildFloatingActionButton(BuildContext context) {
+    return FloatingActionButton(
+      onPressed: () {
+        if (name == null ||
+            name.isEmpty ||
+            user == null ||
+            user.isEmpty ||
+            password == null ||
+            password.isEmpty) {
+          normalDialog(context, 'Please Fill Every Blank');
+        } else if (type == null) {
+          normalDialog(context, 'โปรดเลือกชนิดของสมาชิก');
+        } else {
+          checkUserThread();
+
+          // registerThread();
+        }
+      },
+      child: Icon(Icons.cloud_upload),
     );
   }
 
@@ -120,9 +124,63 @@ class _RegisterState extends State<Register> {
     Response response = await Dio().get(url);
     // print('response = $response');
     if (response.toString() == 'null') {
-      registerThread();
+      confirmRegister();
+      // registerThread();
     } else {
       normalDialog(context, '$user มีคนใช้แล้ว กรุณาเปลี่ยน User ใหม่');
     }
+  }
+
+  Future<Null> confirmRegister() async {
+    showDialog(
+      context: context,
+      builder: (context) => SimpleDialog(
+        title: ListTile(
+          leading: Container(
+            width: 48,
+            child: Image.asset('images/logo.png'),
+          ),
+          title: MyStyle().showTextH2('เงื่อนไขการใช้บริการ'),
+        ),
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Text(MyConstant().law),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Text('2. TEXT2'),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Text('3. TEXT3'),
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              OutlineButton.icon(
+                onPressed: () {
+                  Navigator.pop(context);
+                  registerThread();
+                },
+                icon: Icon(
+                  Icons.check,
+                  color: Colors.green,
+                ),
+                label: Text('ยอมรับ'),
+              ),
+              OutlineButton.icon(
+                onPressed: () => Navigator.pop(context),
+                icon: Icon(
+                  Icons.clear,
+                  color: Colors.red,
+                ),
+                label: Text('ไม่ยอมรับ'),
+              ),
+            ],
+          )
+        ],
+      ),
+    );
   }
 }

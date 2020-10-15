@@ -5,7 +5,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <application
         android:name="io.flutter.app.FlutterApplication"
-        android:label="onerc"
+        android:label="One RC"
         android:icon="@mipmap/ic_launcher">
         <meta-data android:name="com.google.android.geo.API_KEY"
                android:value="AIzaSyDR657KwnXHYpwk_292poGVyqi_5qDQVTM"/>
@@ -37,6 +37,10 @@
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
+            <intent-filter>
+                  <action android:name="FLUTTER_NOTIFICATION_CLICK" />
+                  <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>            
         </activity>
         <!-- Don't delete the meta-data below.
              This is used by the Flutter tool to generate GeneratedPluginRegistrant.java -->
